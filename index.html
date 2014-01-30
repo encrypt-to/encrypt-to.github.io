@@ -76,19 +76,21 @@ FileLoader.prototype.loadData = function() {
 };
 
 // load js file list
-var fileLoader = new FileLoader("https://api.github.com/repos/encrypt-to/encrypt.to/contents/app/assets/javascripts");
+var fileLoader = new FileLoader("https://api.github.com/repos/encrypt-to/encrypt.to/contents/public/assets");
 
 // start file audit
 for (var i in fileLoader.files) {
 	var name = fileLoader.files[i].name;
-	$("#github").append("<p>checking: " + name + "</p>");
-	var deployed = new Audit('https://encrypt.to/assets/' + name, false);
-	var github = new Audit('https://api.github.com/repos/encrypt-to/encrypt.to/contents/app/assets/javascripts/' + name, true);	
-	var result = deployed.encodedData === github.encodedData;
-	if (result) {
-		$("#github").append("<p style='color:green;'>result: " + result + "</p>");
-	} else {
-		$("#github").append("<p style='color:red;'>result: " + result + "</p>");
+	if (name.indexOf(".js") !== -1) {
+		$("#github").append("<p>checking: " + name + "</p>");
+		var deployed = new Audit('https://encrypt.to/assets/' + name, false);
+		var github = new Audit('https://api.github.com/repos/encrypt-to/encrypt.to/contents/public/assets/' + name, true);	
+		var result = deployed.encodedData === github.encodedData;
+		if (result) {
+			$("#github").append("<p style='color:green;'>result: " + result + "</p>");
+		} else {
+			$("#github").append("<p style='color:red;'>result: " + result + "</p>");
+		}		
 	}
 }
 
