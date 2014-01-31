@@ -7,7 +7,7 @@
 
 $(document).ready(function(){
 
-// define audit
+// define Audit class
 function Audit(url, isJson) {
 	var self = this;
 	self.isJson = isJson;
@@ -56,7 +56,7 @@ Audit.prototype.cleanupString = function() {
 	self.encodedData = self.encodedData.replace(/\n/g,'');
 };
 
-// define fileloader
+// define Audit class
 function FileLoader(url) {
 	var self = this;
 	self.url = url;
@@ -71,7 +71,7 @@ FileLoader.prototype.loadData = function() {
     	url: self.url,
         async: false
     }).responseText;
-
+	console.log(self);
 	self.files = JSON.parse(self.sourceData);
 };
 
@@ -81,15 +81,26 @@ var fileLoader = new FileLoader("https://api.github.com/repos/encrypt-to/encrypt
 // start file audit
 for (var i in fileLoader.files) {
 	var name = fileLoader.files[i].name;
+	var size = fileLoader.files[i].size;
 	if (name.indexOf(".js") !== -1) {
-		$("#github").append("<p>checking: " + name + "</p>");
-		var deployed = new Audit('https://encrypt.to/assets/' + name, false);
-		var github = new Audit('https://api.github.com/repos/encrypt-to/encrypt.to/contents/public/assets/' + name, true);	
+		
+		// build links
+		var deployedLink = 'https://encrypt.to/assets/' + name;
+		var githubLink = 'https://api.github.com/repos/encrypt-to/encrypt.to/contents/public/assets/' + name;
+		var githubFile = 'https://raw.github.com/encrypt-to/encrypt.to/master/public/assets/' + name;
+		
+		// load files
+		var deployed = new Audit(deployedLink, false);
+		var github = new Audit(githubLink, true);	
+		
+		// compare base64 string
 		var result = deployed.encodedData === github.encodedData;
+		
+		// write result
 		if (result) {
-			$("#github").append("<p style='color:green;'>result: " + result + "</p>");
+			$('#resultTable > tbody:last').append('<tr><td><a href="' + githubFile + '">' + name + '</a></td><td style="background-color:green;color:white;">=</td><td><a href="' + deployedLink + '">' + name + '</a></td><td>' + size / 1000 + ' kb</td></tr>');		
 		} else {
-			$("#github").append("<p style='color:red;'>result: " + result + "</p>");
+			$('#resultTable > tbody:last').append('<tr style="background-color:red;color:white;"><td>' + name + '</td><td>!=</td><td>' + name + '</td></tr>');
 		}		
 	}
 }
@@ -101,12 +112,19 @@ for (var i in fileLoader.files) {
 
 <body>
 	
-	<p><b>Audit Encrypt.to</b></p>
+	<p><b>Security Audit for <a href="https://encrypt.to/">Encrypt.to</a></b></p>
+	
+	<table id="resultTable" border="0" cellspacing="3" cellpadding="3">
+		<tbody>
+			<tr><th>Github</th><th>equals?</th><th>Encrypt.to</th><th>Size</th></tr>
+		</tbody>		
+	</table>
+	
   <div id="github">  
   </div>
 <br />
   <div id="deployed">    
-	<a href="https://github.com/encrypt-to/encrypt-to.github.io">https://github.com/encrypt-to/encrypt-to.github.io</a>
+	Audit code: <a href="https://github.com/encrypt-to/encrypt-to.github.io">https://github.com/encrypt-to/encrypt-to.github.io</a>
   </div>
 
 </body>
