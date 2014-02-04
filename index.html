@@ -2,10 +2,8 @@
 <html>
 <head>
   <title>Audit Encrypt.to</title>
-	<script src="/jquery.js" type="text/javascript"></script>
+	<script src="jquery.js" type="text/javascript"></script>
 <script>
-
-$(document).ready(function(){
 
 // define Audit class
 function Audit(url, isJson) {
@@ -75,36 +73,41 @@ FileLoader.prototype.loadData = function() {
 	self.files = JSON.parse(self.sourceData);
 };
 
-// load js file list
-var fileLoader = new FileLoader("https://api.github.com/repos/encrypt-to/encrypt.to/contents/public/assets");
 
-// start file audit
-for (var i in fileLoader.files) {
-	var name = fileLoader.files[i].name;
-	var size = fileLoader.files[i].size;
-	if (name.indexOf(".js") !== -1) {
-		
-		// build links
-		var deployedLink = 'https://encrypt.to/assets/' + name;
-		var githubLink = 'https://api.github.com/repos/encrypt-to/encrypt.to/contents/public/assets/' + name;
-		var githubFile = 'https://raw.github.com/encrypt-to/encrypt.to/master/public/assets/' + name;
-		
-		// load files
-		var deployed = new Audit(deployedLink, false);
-		var github = new Audit(githubLink, true);	
-		
-		// compare base64 string
-		var result = deployed.encodedData === github.encodedData;
-		
-		// write result
-		if (result) {
-			$('#resultTable > tbody:last').append('<tr><td><a href="' + githubFile + '">' + name + '</a></td><td style="background-color:green;color:white;">=</td><td><a href="' + deployedLink + '">' + name + '</a></td><td>' + size / 1000 + ' kb</td></tr>');		
-		} else {
-			$('#resultTable > tbody:last').append('<tr style="background-color:red;color:white;"><td>' + name + '</td><td>!=</td><td>' + name + '</td></tr>');
-		}		
-	}
-}
+$(document).ready(function () {
+    setTimeout(function(){
+        
+		// load js file list
+		var fileLoader = new FileLoader("https://api.github.com/repos/encrypt-to/encrypt.to/contents/public/assets");
 
+		// start file audit
+		for (var i in fileLoader.files) {
+			var name = fileLoader.files[i].name;
+			var size = fileLoader.files[i].size;
+			if (name.indexOf(".js") !== -1) {
+
+				// build links
+				var deployedLink = 'https://encrypt.to/assets/' + name;
+				var githubLink = 'https://api.github.com/repos/encrypt-to/encrypt.to/contents/public/assets/' + name;
+				var githubFile = 'https://raw.github.com/encrypt-to/encrypt.to/master/public/assets/' + name;
+
+				// load files
+				var deployed = new Audit(deployedLink, false);
+				var github = new Audit(githubLink, true);	
+
+				// compare base64 string
+				var result = deployed.encodedData === github.encodedData;
+
+				// write result
+				if (result) {
+					$('#resultTable > tbody:last').append('<tr><td><a href="' + githubFile + '">' + name + '</a></td><td style="background-color:green;color:white;">=</td><td><a href="' + deployedLink + '">' + name + '</a></td><td>' + size / 1000 + ' kb</td></tr>');		
+				} else {
+					$('#resultTable > tbody:last').append('<tr style="background-color:red;color:white;"><td>' + name + '</td><td>!=</td><td>' + name + '</td></tr>');
+				}		
+			}
+		}
+		$('#running').text("Test finished.");
+    }, 500);
 });
 </script>
 
@@ -113,6 +116,8 @@ for (var i in fileLoader.files) {
 <body>
 	
 	<p><b>Security Audit for <a href="https://encrypt.to/">Encrypt.to</a></b></p>
+	
+	<p id="running">Test running <img src="indicator.gif"></p>
 	
 	<table id="resultTable" border="0" cellspacing="3" cellpadding="3">
 		<tbody>
