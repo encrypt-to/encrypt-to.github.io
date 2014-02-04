@@ -54,36 +54,40 @@ Audit.prototype.cleanupString = function() {
 	self.encodedData = self.encodedData.replace(/\n/g,'');
 };
 
-// define Audit class
-function FileLoader(url) {
+// define ObjLoader class
+function ObjLoader(url) {
 	var self = this;
 	self.url = url;
-	self.files = [];
+	self.objects = [];
 	self.loadData();
 }
 
 // fetch data from remote source
-FileLoader.prototype.loadData = function() {
+ObjLoader.prototype.loadData = function() {
 	var self = this;
  	self.sourceData = $.ajax({
     	url: self.url,
         async: false
     }).responseText;
-	console.log(self);
-	self.files = JSON.parse(self.sourceData);
+	self.objects = JSON.parse(self.sourceData);
 };
 
-
+// start audit after page load 
 $(document).ready(function () {
     setTimeout(function(){
         
 		// load js file list
-		var fileLoader = new FileLoader("https://api.github.com/repos/encrypt-to/encrypt.to/contents/public/assets");
+		var fileLoader = new ObjLoader("https://api.github.com/repos/encrypt-to/encrypt.to/contents/public/assets");
 
+		// load commits
+		var commitLoader = new ObjLoader("https://api.github.com/repos/encrypt-to/encrypt.to/commits");
+		var lastCommit = commitLoader.objects[0];
+		$('#commit').append("<a href='https://github.com/encrypt-to/encrypt.to/commit/" + lastCommit.sha + "'>" + "Last commit from " + lastCommit.commit.author.date + ", " + lastCommit.commit.message + "</a>");		
+		
 		// start file audit
-		for (var i in fileLoader.files) {
-			var name = fileLoader.files[i].name;
-			var size = fileLoader.files[i].size;
+		for (var i in fileLoader.objects) {
+			var name = fileLoader.objects[i].name;
+			var size = fileLoader.objects[i].size;
 			if (name.indexOf(".js") !== -1) {
 
 				// build links
@@ -125,8 +129,8 @@ $(document).ready(function () {
 		</tbody>		
 	</table>
 	
-  <div id="github">  
-  </div>
+	<p id="commit"></p>
+
 <br />
   <div id="deployed">    
 	Audit code: <a href="https://github.com/encrypt-to/encrypt-to.github.io">https://github.com/encrypt-to/encrypt-to.github.io</a>
