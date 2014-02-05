@@ -92,8 +92,7 @@ $(document).ready(function () {
 				// build links
 				var deployedLink = 'https://encrypt.to/assets/' + name;
 				var githubLink = 'https://api.github.com/repos/encrypt-to/encrypt.to/contents/public/assets/' + name;
-				var githubFile = 'https://raw.github.com/encrypt-to/encrypt.to/master/public/assets/' + name;
-
+				
 				// load files
 				var deployed = new Audit(deployedLink, false);
 				var github = new Audit(githubLink, true);	
@@ -103,7 +102,7 @@ $(document).ready(function () {
 
 				// write result
 				if (result) {
-					$('#resultTable > tbody:last').append('<tr><td><a href="' + githubFile + '">' + name + '</a></td><td style="background-color:green;color:white;">=</td><td><a href="' + deployedLink + '">' + name + '</a></td><td>' + size / 1000 + ' kb</td></tr>');		
+					$('#resultTable > tbody:last').append('<tr><td>' + name + '</td><td style="background-color:green;color:white;">=</td><td>' + name + '</td><td>' + size / 1000 + ' kb</td></tr>');		
 				} else {
 					$('#resultTable > tbody:last').append('<tr style="background-color:red;color:white;"><td>' + name + '</td><td>!=</td><td>' + name + '</td></tr>');
 				}		
