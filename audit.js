@@ -29,7 +29,7 @@ Audit.prototype.startAudit = function() {
 Audit.prototype.loadData = function() {
 	var self = this;
  	self.sourceData = $.ajax({
-    	url: self.url + new Date().getTime(),
+    	url: self.url + "?" + new Date().getTime(),
         async: false
     }).responseText;
 };
@@ -65,7 +65,7 @@ function ObjLoader(url) {
 ObjLoader.prototype.loadData = function() {
 	var self = this;
  	self.sourceData = $.ajax({
-    	url: self.url + new Date().getTime(),
+    	url: self.url + "?" + new Date().getTime(),
         async: false
     }).responseText;
 	self.objects = JSON.parse(self.sourceData);
