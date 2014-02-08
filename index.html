@@ -32,7 +32,7 @@ Audit.prototype.startAudit = function() {
 Audit.prototype.loadData = function() {
 	var self = this;
  	self.sourceData = $.ajax({
-    	url: self.url,
+    	url: self.url + new Date().getTime(),
         async: false
     }).responseText;
 };
@@ -68,7 +68,7 @@ function FileLoader(url) {
 FileLoader.prototype.loadData = function() {
 	var self = this;
  	self.sourceData = $.ajax({
-    	url: self.url,
+    	url: self.url + new Date().getTime(),
         async: false
     }).responseText;
 
