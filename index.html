@@ -2,112 +2,21 @@
 <html>
 <head>
   <title>Audit Encrypt.to</title>
-	<script src="/jquery.js" type="text/javascript"></script>
-<script>
-
-$(document).ready(function(){
-
-// define audit
-function Audit(url, isJson) {
-	var self = this;
-	self.isJson = isJson;
-	self.url = url;
-	
-	self.startAudit();
-}
-
-// start processing
-Audit.prototype.startAudit = function() {
-	var self = this;
-	self.loadData();
-	self.encodeData();
-	
-	if (self.isJson) {
-		self.parseJson();
-		self.cleanupString();
-	}
-};
-
-// fetch data from remote source
-Audit.prototype.loadData = function() {
-	var self = this;
- 	self.sourceData = $.ajax({
-    	url: self.url + new Date().getTime(),
-        async: false
-    }).responseText;
-};
-
-// encode sourceData to base64
-Audit.prototype.encodeData = function() {
-	var self = this;	
- 	self.encodedData = window.btoa(self.sourceData);
-};
-
-// load encoded data from obj
-Audit.prototype.parseJson = function() {
-	var self = this;
- 	var obj = JSON.parse(self.sourceData);
-	self.encodedData = obj.content;
-};
-
-// remove newlines
-Audit.prototype.cleanupString = function() {
-	var self = this;
-	self.encodedData = self.encodedData.replace(/\n/g,'');
-};
-
-// define fileloader
-function FileLoader(url) {
-	var self = this;
-	self.url = url;
-	self.files = [];
-	self.loadData();
-}
-
-// fetch data from remote source
-FileLoader.prototype.loadData = function() {
-	var self = this;
- 	self.sourceData = $.ajax({
-    	url: self.url + new Date().getTime(),
-        async: false
-    }).responseText;
-
-	self.files = JSON.parse(self.sourceData);
-};
-
-// load js file list
-var fileLoader = new FileLoader("https://api.github.com/repos/encrypt-to/encrypt.to/contents/public/assets");
-
-// start file audit
-for (var i in fileLoader.files) {
-	var name = fileLoader.files[i].name;
-	if (name.indexOf(".js") !== -1) {
-		$("#github").append("<p>checking: " + name + "</p>");
-		var deployed = new Audit('https://encrypt.to/assets/' + name, false);
-		var github = new Audit('https://api.github.com/repos/encrypt-to/encrypt.to/contents/public/assets/' + name, true);	
-		var result = deployed.encodedData === github.encodedData;
-		if (result) {
-			$("#github").append("<p style='color:green;'>result: " + result + "</p>");
-		} else {
-			$("#github").append("<p style='color:red;'>result: " + result + "</p>");
-		}		
-	}
-}
-
-});
-</script>
-
+	<script src="jquery.js" type="text/javascript"></script>
+	<script src="audit.js" type="text/javascript"></script>
 </head>
-
-<body>
-	
-	<p><b>Audit Encrypt.to</b></p>
-  <div id="github">  
+<body>	
+	<p><b>Security Audit for <a href="https://encrypt.to/">Encrypt.to</a></b></p>	
+	<p id="running">Test running <img src="indicator.gif"></p>	
+	<table id="resultTable" border="0" cellspacing="3" cellpadding="3">
+		<tbody>
+			<tr><th>Github</th><th>equals?</th><th>Encrypt.to</th><th>Size</th></tr>
+		</tbody>		
+	</table>	
+	<p id="commit"></p>
+	<br />
+  	<div id="deployed">    
+	Audit code: <a href="https://github.com/encrypt-to/encrypt-to.github.io">https://github.com/encrypt-to/encrypt-to.github.io</a>
   </div>
-<br />
-  <div id="deployed">    
-	<a href="https://github.com/encrypt-to/encrypt-to.github.io">https://github.com/encrypt-to/encrypt-to.github.io</a>
-  </div>
-
 </body>
 </html>
