@@ -9,7 +9,7 @@ $(document).ready(function () {
 						if (data.valid === 'true') {
 				      $('#resultTable > tbody:last').append('<tr><td>' + data.name + '</td><td style="background-color:green;color:white;">=</td><td>' + data.name + '</td><td>' + data.size / 1000 + ' kb</td></tr>');
 			      } else {
-				      $('#resultTable > tbody:last').append('<tr style="background-color:red;color:white;"><td>' + data.name + '</td><td>!=</td><td>' + data.name + '</td></tr>');
+				      $('#resultTable > tbody:last').append('<tr><td>' + data.name + '</td><td style="background-color:red;color:white;">!=</td><td>' + data.name + '</td><td>' + data.size / 1000 + ' kb</td></tr>');
 			      }
 			      break;
 			    case 'commit':
