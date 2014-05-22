@@ -1,0 +1,177 @@
+body {
+  margin: 60px auto;
+  font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+	background-color: white;
+	color: #484848;
+
+  width: 540px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+table {
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+table th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #dedede;
+}
+table td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+}
+
+header {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+header a {
+	color: #484848;
+	text-decoration: none;
+	border-bottom: 1px dotted #999892;
+}
+
+header a:visited {
+	color: #484848;
+}
+
+footer {
+  border-top: 1px solid rgb(206,206,206);
+
+  margin-top: 48px;
+  padding-top: 24px;
+
+  font-size: 14px;
+}
+
+header a:hover {
+	border-bottom: 1px solid #999892;
+}
+
+h1 {
+  font-size: 34px;
+  line-height: 38px;
+  font-weight: normal;
+  margin-bottom: 20px;
+}
+
+body.post h1 {
+  margin-bottom: 5px;
+}
+
+body.post header p {
+  font-size: 12px;
+}
+
+h2 {
+  margin-top: 40px;
+  margin-bottom: 5px;
+
+  font-size: 22px;
+  font-weight: normal;
+}
+
+h3 {
+  margin-top: 20px;
+  margin-bottom: 5px;
+
+  font-size: 18px;
+  font-weight: bold;
+}
+
+img.avatar {
+  background-size: 100%;
+  display: block;
+  height: 80px;
+  overflow: hidden;
+  border-radius: 100px;
+  -moz-border-radius: 100px;
+  -webkit-border-radius: 100px;
+  width: 80px;
+  margin-right: 15px;
+}
+
+
+pre {
+  font-size: 15px;
+  white-space: pre;
+  word-wrap: normal;
+  overflow: auto;
+  width: auto;
+}
+
+@media screen and (max-width: 540px) {
+  body {
+    margin: 10px auto;
+    padding: 0 20px 0 20px;
+    width: auto;
+    word-wrap: break-word;
+  }
+
+  pre {
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  img {
+    max-width: 100%;
+    width: auto;
+    height: auto;
+  }
+
+  img.avatar {
+    height: 110px;
+    width: 110px;
+  }
+
+  .video-wrap {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 30px; height: 0; overflow: hidden;
+  }
+
+  .video-wrap iframe,
+  .video-wrap object,
+  .video-wrap embed {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+  }
+}
+
+
+a {
+  color:  #C30C0C;
+}
+
+a:visited {
+  color: gray;
+}
+
+p {
+  margin: 0 0 2ex 0;
+}
+
+ul {
+  margin: 0 0 2ex 0;
+  padding: 0;
+}
+
+li {
+  margin: 0 0 0 20px;
+  padding: 0;
+}
